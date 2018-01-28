@@ -1,8 +1,7 @@
 # firefly-database
-PostgreSQL extension to simplify the installation of Firefly database
+PostgreSQL extension to simplify the installation of Firefly database.
 
 ## Installation
-Installation : 
 ```bash
 # Install postgresql
 sudo apt-get install postgresql-9.6 postgresql-server-dev-9.6
