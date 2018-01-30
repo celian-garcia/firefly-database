@@ -12,5 +12,5 @@ jobs:
      - run: docker build -t $DOCKER_USER/firefly-database:0.1 .
 
      # deploy the image
-     #- run: docker push $DOCKER_USER/firefly-server:0.5
+     - run: docker push $DOCKER_USER/firefly-database:0.1
 
