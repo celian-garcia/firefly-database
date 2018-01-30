@@ -6,10 +6,18 @@
 PostgreSQL extension to simplify the installation of Firefly database.
 
 ## Installation
+
+**Install postgresql**
 ```bash
 # Install postgresql
-sudo apt-get install postgresql-9.6 postgresql-server-dev-9.6 gem
+sudo apt-get install postgresql-9.6 postgresql-server-dev-9.6
+```
 
+**Install postgis**: <br>
+See [firefly-database-base Dockerfile](https://github.com/celian-garcia/firefly-docker-bases/blob/master/firefly-database-base/0.1/Dockerfile)
+
+**Install firefly database extension**:
+```bash
 # Install firefly database extension
 sudo make install
 ```
