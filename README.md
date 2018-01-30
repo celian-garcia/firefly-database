@@ -1,6 +1,6 @@
 | Quality | Build & deploy | License |
 | :------ | :------------- | :------ |
-| [![Codacy Badge](https://api.codacy.com/project/badge/Grade/1aca67fa542644be89da1351fc625f57)](https://www.codacy.com/app/celiangarcia/firefly-database?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=celian-garcia/firefly-database&amp;utm_campaign=Badge_Grade) | [![CircleCI](https://circleci.com/gh/celian-garcia/firefly-database.svg?style=svg)](https://circleci.com/gh/celian-garcia/firefly-database) | [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) |
+| [![Codacy Badge](https://api.codacy.com/project/badge/Grade/1aca67fa542644be89da1351fc625f57)](https://www.codacy.com/app/celiangarcia/firefly-database?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=celian-garcia/firefly-database&amp;utm_campaign=Badge_Grade) | [![CircleCI](https://circleci.com/gh/celian-garcia/firefly-database.svg?style=shield)](https://circleci.com/gh/celian-garcia/firefly-database) | [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) |
 
 # firefly-database
 PostgreSQL extension to simplify the installation of Firefly database.
