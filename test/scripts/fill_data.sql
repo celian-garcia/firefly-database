@@ -14,16 +14,16 @@ VALUES ('', '', 0, 0, 0, '', '');
 -- Insert points
 INSERT INTO
   fpoint3d (task_id, value)
-VALUES (0, '(0,0)');
+VALUES (0, 'POINT(0 0 0)');
 
 INSERT INTO
   fpoint3d (task_id, value)
-VALUES (0, '(1,1)');
+VALUES (0, 'POINT(1 1 1)');
 
 INSERT INTO
   fpoint3d (task_id, value)
-VALUES (1, '(0,0)');
+VALUES (1, 'POINT(0 0 0)');
 
 INSERT INTO
   fpoint3d (task_id, value)
-VALUES (2, '(0,0)');
+VALUES (2, 'POINT(0 0 0)');
