@@ -11,7 +11,7 @@ CACHE 1;
 CREATE TABLE fpoint3d (
   id         INTEGER DEFAULT nextval('fpoint3d_id_seq' :: REGCLASS) NOT NULL,
   task_id    INTEGER,
-  value      POINT                                                  NOT NULL,
+  value      GEOMETRY(PointZ)                                       NOT NULL,
   operations INTEGER []                                             NOT NULL DEFAULT '{}'
 );
 
@@ -42,15 +42,6 @@ ALTER TABLE ONLY task
 ALTER TABLE ONLY fpoint3d
   ADD CONSTRAINT "FPOINT_3D_FOREIGN_KEY" FOREIGN KEY (task_id) REFERENCES task (id);
 
-CREATE OR REPLACE FUNCTION hashpoint(POINT)
-  RETURNS INTEGER
-LANGUAGE SQL IMMUTABLE
-AS 'SELECT hashfloat8($1 [0]) # hashfloat8($1 [1])';
-
-CREATE OPERATOR CLASS point_hash_ops DEFAULT FOR TYPE POINT USING HASH AS
-OPERATOR 1 ~=( POINT, POINT ),
-FUNCTION 1 hashpoint( POINT );
-
 CREATE FUNCTION make_operation_seq()
   RETURNS TRIGGER
 LANGUAGE plpgsql
@@ -65,7 +56,7 @@ CREATE TRIGGER make_operation_seq
 AFTER INSERT ON task
 FOR EACH ROW EXECUTE PROCEDURE make_operation_seq();
 
-CREATE FUNCTION increase_operations(in_value POINT, in_task_id INTEGER)
+CREATE FUNCTION increase_operations(in_value GEOMETRY(PointZ), in_task_id INTEGER)
   RETURNS INTEGER
 LANGUAGE plpgsql
 AS $$
@@ -80,7 +71,7 @@ BEGIN
   SELECT *
   INTO pt
   FROM fpoint3D
-  WHERE value <-> in_value < 0.00001 AND task_id = in_task_id;
+  WHERE ST_Distance(value, in_value) < 0.00001 AND task_id = in_task_id;
   pt_id = pt.id;
   pt_operations = pt.operations;
 
@@ -93,7 +84,7 @@ BEGIN
 END
 $$;
 
-CREATE FUNCTION save_add_operation(in_value POINT, in_task_id INTEGER)
+CREATE FUNCTION save_add_operation(in_value GEOMETRY(PointZ), in_task_id INTEGER)
   RETURNS INTEGER
 LANGUAGE plpgsql
 AS $$
@@ -105,7 +96,7 @@ BEGIN
   SELECT operations
   INTO pt_operations
   FROM FPOINT3D
-  WHERE value <-> in_value < 0.00001 AND task_id = in_task_id;
+  WHERE ST_Distance(value, in_value) < 0.00001 AND task_id = in_task_id;
 
   EXECUTE 'SELECT last_value FROM f_operation_seq_for_task_' || in_task_id
   INTO current_op;
@@ -126,7 +117,7 @@ BEGIN
 END
 $$;
 
-CREATE FUNCTION save_del_operation(in_value POINT, in_task_id INTEGER)
+CREATE FUNCTION save_del_operation(in_value GEOMETRY(PointZ), in_task_id INTEGER)
   RETURNS INTEGER
 LANGUAGE plpgsql
 AS $$
@@ -138,7 +129,7 @@ BEGIN
   SELECT operations
   INTO pt_operations
   FROM FPOINT3D
-  WHERE value <-> in_value < 0.00001 AND task_id = in_task_id;
+  WHERE ST_Distance(value, in_value) < 0.00001 AND task_id = in_task_id;
 
   EXECUTE 'SELECT last_value FROM f_operation_seq_for_task_' || in_task_id
   INTO current_op;
@@ -174,18 +165,18 @@ BEGIN
   last_operation_index := in_operations [in_operations_length];
   IF in_operations_length = 0
   THEN
-    RETURN (last_operation_index, 'nothing'::OPERATION_TYPE);
+    RETURN (last_operation_index, 'nothing' :: OPERATION_TYPE);
   ELSIF new_operations_length % 2 = 0
     THEN
-      RETURN (last_operation_index, 'nothing'::OPERATION_TYPE);
+      RETURN (last_operation_index, 'nothing' :: OPERATION_TYPE);
   ELSIF in_operations_length % 2 = 0
     THEN
-      RETURN (last_operation_index, 'delete'::OPERATION_TYPE);
+      RETURN (last_operation_index, 'delete' :: OPERATION_TYPE);
   ELSIF in_operations_length % 2 = 1
     THEN
-      RETURN (last_operation_index, 'add'::OPERATION_TYPE);
+      RETURN (last_operation_index, 'add' :: OPERATION_TYPE);
   END IF;
-  RETURN (last_operation_index, 'nothing'::OPERATION_TYPE);
+  RETURN (last_operation_index, 'nothing' :: OPERATION_TYPE);
 END
 $$;
 
@@ -225,7 +216,7 @@ BEGIN
 END
 $$;
 
-CREATE TYPE OPERATION_WITH_ELEMENT AS (operation_id INTEGER, operation_type OPERATION_TYPE, point_id INTEGER, point_value POINT);
+CREATE TYPE OPERATION_WITH_ELEMENT AS (operation_id INTEGER, operation_type OPERATION_TYPE, point_id INTEGER, point_value GEOMETRY(PointZ));
 
 CREATE FUNCTION collect_operations(in_task_id INTEGER, in_from_operation INTEGER)
   RETURNS SETOF OPERATION_WITH_ELEMENT

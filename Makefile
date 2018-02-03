@@ -3,6 +3,7 @@ DATA = firefly--0.0.1.sql       # script files to install
 TESTS = $(wildcard test/sql/*.sql)
 REGRESS = $(patsubst test/sql/%.sql,%,$(TESTS))
 REGRESS_OPTS  = --inputdir=test         \
+                --load-extension=postgis \
                 --load-extension=firefly \
                 --load-extension=pgtap \
                 --load-language=plpgsql
