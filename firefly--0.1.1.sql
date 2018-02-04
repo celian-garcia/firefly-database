@@ -216,7 +216,7 @@ BEGIN
 END
 $$;
 
-CREATE TYPE OPERATION_WITH_ELEMENT AS (operation_id INTEGER, operation_type OPERATION_TYPE, point_id INTEGER, point_value GEOMETRY(PointZ));
+CREATE TYPE OPERATION_WITH_ELEMENT AS (operation_id INTEGER, operation_type OPERATION_TYPE, point_id INTEGER, point_value VARCHAR);
 
 CREATE FUNCTION collect_operations(in_task_id INTEGER, in_from_operation INTEGER)
   RETURNS SETOF OPERATION_WITH_ELEMENT
@@ -236,7 +236,7 @@ BEGIN
     tmp_op := collect_operation(r.operations, in_from_operation);
     IF NOT tmp_op.type = 'nothing'
     THEN
-      result_row := (tmp_op.id, tmp_op.type, r.id, r.value);
+      result_row := (tmp_op.id, tmp_op.type, r.id, st_astext(r.value));
       RETURN NEXT result_row;
     END IF;
 
