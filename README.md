@@ -43,8 +43,16 @@ sudo -u postgres make installcheck
 ```
 
 ## Use
-In your sql script, you just have to put this line to have all necessary tables and functions.
+In your sql script, you just have to put this line to have all necessary tables and functions.<br>
+This will install extension firefly and its dependencies extensions into your database.
 
 ```sql
-CREATE EXTENSION firefly;
+CREATE EXTENSION firefly CASCADE;
 ```
+
+## Update version procedure
+* Update the firefly--VERSION.sql file name.
+* Update the `default_version` field from firefly.control file.
+* Update the `DATA` variable from Makefile file.
+* Update the `jobs.build.environment.VERSION` field from .circleci/config.yml file.
+* Tag the version.
