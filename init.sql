@@ -7,7 +7,7 @@ SET check_function_bodies = FALSE;
 SET client_min_messages = WARNING;
 SET row_security = OFF;
 
-CREATE EXTENSION firefly;
+CREATE EXTENSION firefly CASCADE;
 
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';

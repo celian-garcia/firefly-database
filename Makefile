@@ -1,5 +1,5 @@
 EXTENSION = firefly             # the extensions name
-DATA = firefly--0.0.1.sql       # script files to install
+DATA = firefly--0.1.0.sql       # script files to install
 TESTS = $(wildcard test/sql/*.sql)
 REGRESS = $(patsubst test/sql/%.sql,%,$(TESTS))
 REGRESS_OPTS  = --inputdir=test         \
