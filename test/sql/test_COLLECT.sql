@@ -76,12 +76,12 @@ SELECT is(
 -- "collect_operations" function tests
 SELECT results_eq(
     'SELECT * FROM collect_operations(0, 0)',
-    $$ VALUES (3, 'add'::OPERATION_TYPE, 0, 'POINT(0 0 0)'::geometry) $$,
+    $$ VALUES (3, 'add'::OPERATION_TYPE, 0, 'POINT Z (0 0 0)'::varchar) $$,
     'Collect operations of task 0 since operation 0 should return an add of point 0');
 
 SELECT results_eq(
     'SELECT * FROM collect_operations(0, 4)',
-    $$ VALUES (7, 'delete'::OPERATION_TYPE, 1, 'POINT(1 1 1)'::geometry) $$,
+    $$ VALUES (7, 'delete'::OPERATION_TYPE, 1, 'POINT Z (1 1 1)'::varchar) $$,
     'Collect operations of task 0 since operation 4 should return a delete of point 1');
 
 SELECT is_empty(
