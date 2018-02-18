@@ -1,0 +1,9 @@
+\unset ECHO
+1..7
+ok 1 - Schema public should have the correct sequences
+ok 2 - fpoint3d table should contain 2 entries
+ok 3 - Schema public should have the correct sequences
+ok 4 - fpoint3d table should contain 0 entries
+ok 5 - Schema public should have the correct sequences
+ok 6 - Schema public should have the correct sequences
+ok 7 - fpoint3d table should contain 0 entries

@@ -40,7 +40,7 @@ ALTER TABLE ONLY task
   ADD CONSTRAINT task_id_key UNIQUE (id);
 
 ALTER TABLE ONLY fpoint3d
-  ADD CONSTRAINT "FPOINT_3D_FOREIGN_KEY" FOREIGN KEY (task_id) REFERENCES task (id);
+  ADD CONSTRAINT "FPOINT_3D_FOREIGN_KEY" FOREIGN KEY (task_id) REFERENCES task (id) ON DELETE CASCADE;
 
 CREATE FUNCTION make_operation_seq()
   RETURNS TRIGGER
@@ -52,9 +52,23 @@ BEGIN
 END
 $$;
 
+CREATE FUNCTION unmake_operation_seq()
+  RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+BEGIN
+  EXECUTE format('DROP SEQUENCE f_operation_seq_for_task_%s', OLD.id);
+  RETURN OLD;
+END
+$$;
+
 CREATE TRIGGER make_operation_seq
 AFTER INSERT ON task
 FOR EACH ROW EXECUTE PROCEDURE make_operation_seq();
+
+CREATE TRIGGER unmake_operation_seq
+AFTER DELETE ON task
+FOR EACH ROW EXECUTE PROCEDURE unmake_operation_seq();
 
 CREATE FUNCTION increase_operations(in_value GEOMETRY(PointZ), in_task_id INTEGER)
   RETURNS INTEGER

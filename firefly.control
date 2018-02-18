@@ -1,6 +1,6 @@
 # firefly extension
 comment = 'firefly data types and function'
 module_pathname = '$libdir/pgtap'
-default_version = '0.1.1'
+default_version = '0.2.0'
 relocatable = true
 requires = 'plpgsql, postgis'
